@@ -1,0 +1,57 @@
+<div>
+    <h1> Products </h1>
+    <a href="/carts/{{cartId}}"></a>
+</div>
+
+<div>
+    <div>
+        {{#each products}}
+            <div>
+                <h2>{{title}}</h2>
+                <p>{{description}}</p>
+                <p>Price: ${{price}}</p>
+                <form action="/api/carts/{{../cartId}}product/{{id}}" method="POST">
+                    <button type="submit"> Add to Cart </button>
+                </form>
+            </div>
+        {{/each}}
+    </div>
+</div>
+
+{{#if hasPrevPage}}
+    <a href="/products?page={{prevPage}}"> Prev </a>
+{{/if}}
+{{#if hasNextPage}}
+    <a href="/products?page={{nextPage}}"> Next </a>
+{{/if}} 
+
+
+<p>Page {{currentPage}} of {{totalPages}} </p>
+
+<a href="/api/sessions/logout">Logout</a>
+
+{{!-- <h1> Products </h1>
+<p>Welcome {{user.first_name}} {{user.last_name}}!</p>
+
+{{#each products}}
+    <div>
+        <h2>{{title}}</h2>
+        <p>{{description}}</p>
+        <p>Price: ${{price}}</p>
+        <p>Category: {{category}}</p>
+        <button> Add to Cart </button>
+    </div>
+{{/each}}
+
+
+{{#if hasPrevPage}}
+    <a href="/products?page={{prevPage}}"> Prev </a>
+{{/if}}
+{{#if hasNextPage}}
+    <a href="/products?page={{nextPage}}"> Next </a>
+{{/if}} 
+
+
+<p>Page {{currentPage}} of {{totalPages}} </p>
+
+<a href="/api/sessions/logout">Logout</a> --}}

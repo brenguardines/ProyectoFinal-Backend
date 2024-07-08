@@ -1,0 +1,241 @@
+paths:
+  /api/carts:
+    post:
+      summary: Creates a new cart
+      tags:
+        - Carts
+      responses:
+        "201":
+          description: Carrito creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Cart"
+        "500":
+          description: Error interno del servidor
+
+  /api/carts/{cid}:
+    get:
+      summary: Get cart by ID
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: ID del carrito que se quiere buscar
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Carrito encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Cart"
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error interno del servidor
+
+    put:
+      summary: Update cart by ID
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: ID del carrito que se quiere actualizar
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateCart"
+      responses:
+        "200":
+          description: Carrito actualizado correctamente
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error interno del servidor
+
+    delete:
+      summary: Empty cart by ID
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: ID del carrito que se quiere vaciar
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Carrito vaciado correctamente
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error interno del servidor
+
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Add product to cart
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: ID del carrito al que se quiere agregar el producto
+        schema:
+          type: string
+      - name: pid
+        in: path
+        required: true
+        description: ID del producto que se quiere agregar al carrito
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Producto agregado al carrito correctamente
+        "404":
+          description: Carrito o producto no encontrado
+        "500":
+          description: Error interno del servidor
+
+    delete:
+      summary: Remove product from cart
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: ID del carrito del que se quiere eliminar el producto
+        schema:
+          type: string
+      - name: pid
+        in: path
+        required: true
+        description: ID del producto que se quiere eliminar del carrito
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Producto eliminado del carrito correctamente
+        "404":
+          description: Carrito o producto no encontrado
+        "500":
+          description: Error interno del servidor
+
+    put:
+      summary: Update quantity of a product in cart
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: ID del carrito donde se quiere actualizar la cantidad del producto
+        schema:
+          type: string
+      - name: pid
+        in: path
+        required: true
+        description: ID del producto cuya cantidad se quiere actualizar
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateProductQuantity"
+      responses:
+        "200":
+          description: Cantidad del producto actualizada correctamente
+        "404":
+          description: Carrito o producto no encontrado
+        "500":
+          description: Error interno del servidor
+
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Finalize purchase of cart
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: ID del carrito cuyo proceso de compra se quiere finalizar
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Compra finalizada correctamente
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error interno del servidor
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID autogenerado por MongoDB
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                $ref: "#components/schemas/Product"
+              quantity:
+                type: integer
+                description: Cantidad del producto
+      example:
+        _id: 60f73fe4f2a30b2e0c8b4567
+        products:
+          - product:
+              _id: 60f73f2df2a30b2e0c8b4567
+              title: Iphone 15 Pro
+              price: 2000
+            quantity: 2
+
+  requestBodies:
+    updateCart:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+                description: ID del producto
+              quantity:
+                type: integer
+                description: Cantidad del producto
+      example:
+        products:
+          - product: 60f73f2df2a30b2e0c8b4567
+            quantity: 2
+
+    updateProductQuantity:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          description: Nueva cantidad del producto
+      example:
+        quantity: 3
