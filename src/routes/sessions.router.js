@@ -19,28 +19,26 @@ router.post("/login", passport.authenticate("login", {failureRedirect: "/api/ses
             age: 22,
             role: "admin"
         };
-        response.redirect("/products");
-    }else{
-        try{
+        response.redirect("/"); 
+    } else {
+        try {
             const user = await UserModel.findOne({email: email});
-            if(user){
-                if(isValidPassword(password,user)){
+            if(user) {
+                if(isValidPassword(password, user)){
                     request.session.login = true;
                     request.session.user = {...user._doc};
-    
-                    response.redirect("/products");
-                }else{
+                    response.redirect("/"); 
+                } else {
                     response.status(401).send({error: "Invalid password"});
                 }
-            }else{
+            } else {
                 response.status(404).send({error: "User not found"});
             }
-        } catch(error){
+        } catch(error) {
             response.status(404).send({error: "Error in login"});
         }
     }
-    
-})
+});
 
 router.get("/faillogin", async (request, response) => {
     response.send({error: "Failed login"});

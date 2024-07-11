@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const exphbs = require("express-handlebars").create({}); // Cambia la forma de inicializar exphbs
+const exphbs = require("express-handlebars").create({}); 
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const initializePassport = require("./config/passport.config.js");
@@ -38,23 +38,22 @@ app.use(session({
 app.use(addLogger);
 
 // Configuración de Handlebars
-app.engine("handlebars", exphbs.engine); // Cambia la forma de configurar exphbs
+app.engine("handlebars", exphbs.engine); 
 app.set("view engine", "handlebars");
-app.set("views", path.join(__dirname, "views")); // Ajusta esta ruta según tu estructura de carpetas
+app.set("views", path.join(__dirname, "views")); 
 
 // Inicializar passport
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Rutas API
+
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
-app.use("/api/users", userRouter); // Asegúrate de que userRouter se cargue después de inicializar passport
+app.use("/api/users", userRouter); 
 app.use("/api/sessions", sessionRouter);
 app.use("/", viewsRouter);
 
-// Servir archivos estáticos del frontend
 app.use(express.static(path.join(__dirname, '..', 'frontend-build')));
 
 app.get('*', (request, response) => {

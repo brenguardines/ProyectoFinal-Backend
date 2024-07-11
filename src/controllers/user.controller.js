@@ -236,16 +236,16 @@ class UserController {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'tu-email@gmail.com',
-                pass: 'tu-contraseña'
+                user: 'yourEmail@gmail.com',
+                pass: 'yourPassword'
             }
         });
 
         const mailOptions = {
-            from: 'tu-email@gmail.com',
+            from: 'yourEmail@gmail.com',
             to: email,
-            subject: 'Cuenta eliminada por inactividad',
-            text: 'Tu cuenta ha sido eliminada debido a inactividad en los últimos 2 días.'
+            subject: 'Account deleted for inactivity',
+            text: 'Your account has been deleted because inactivity in the last 2 days'
         };
 
         return transporter.sendMail(mailOptions);
