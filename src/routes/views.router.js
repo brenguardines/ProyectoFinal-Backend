@@ -7,24 +7,22 @@ const isAuthenticated = require("../middleware/authenticate.middleware.js");
 
 const viewController = new ViewController();
 
-// Ruta inicial, redirige al login
 router.get("/", (req, res) => {
     res.redirect("/login");
 });
 
-// Ruta para mostrar el formulario de login
+router.get("/login", viewController.renderLogin);
+
 router.post("/login", passport.authenticate("login", {
     successRedirect: "http://localhost:3000",  
     failureRedirect: "/login",
 }));
 
-// Ruta para procesar el inicio de sesión
 router.post("/login", passport.authenticate("login", {
     successRedirect: "/products",  
     failureRedirect: "/login",     
 }));
 
-// Otras rutas protegidas que requerirán autenticación
 router.get("/products", isAuthenticated, viewController.renderProducts);
 router.get("/carts/:cid", isAuthenticated, viewController.renderCart);
 router.get("/register", viewController.renderRegister);
